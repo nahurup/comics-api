@@ -4,9 +4,9 @@ from bs4 import BeautifulSoup
 comics_list = []
 
 class Comic:
-    def __init__(self, name, url, img_url):
+    def __init__(self, name, name_url, img_url):
         self.name = name
-        self.url = url
+        self.name_url = name_url
         self.img_url = img_url
 
 def get_list(page):
@@ -21,10 +21,10 @@ def get_list(page):
 
     for comic in comics_container:
         comic_name = comic.a.text
-        comic_url = ((comic.a['href']).rsplit('/', 1)[1])
+        comic_name_url = ((comic.a['href']).rsplit('/', 1)[1])
         comic_img = ("https://readcomicsonline.ru/uploads/manga/"+((comic.a['href']).rsplit('/', 1)[1])+"/cover/cover_250x350.jpg")
 
-        comics_list.append(Comic(comic_name, comic_url, comic_img))
+        comics_list.append(Comic(comic_name, comic_name_url, comic_img))
     
     return comics_list
 
@@ -38,5 +38,7 @@ def get_pagination_max():
     pagination_block = html_soup.find('ul', class_ = 'pagination')
 
     pages = pagination_block.findAll('li')
+
+    print(int(pages[len(pages)-2].text))
 
     return int(pages[len(pages)-2].text)
