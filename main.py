@@ -1,13 +1,24 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from get_comics import get_list, get_pagination_max
 from get_issues import get_issues
 from get_info import get_info
 from get_pages import get_pages, cant_pages
 from get_search import get_search
 
-app = FastAPI(title='Hola',
-            description='prueba de API',
+app = FastAPI(title='Comics API',
+            description='API that delivers comics, issues and pages.',
             version='1.0.1')
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 #get comics from page number
 @app.get('/page/{page_number}')
